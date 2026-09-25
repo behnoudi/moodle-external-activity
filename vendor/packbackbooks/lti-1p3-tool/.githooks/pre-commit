@@ -1,0 +1,119 @@
+#!/bin/bash
+
+set -o pipefail
+
+GIT_ROOT=$(git rev-parse --show-toplevel) # ".../lti-1-3-php-library"
+
+# So we avoid the "Not a git repository" error when performing git commands in a subdir
+unset GIT_DIR
+
+# Get changed files to be committed, excluding deleted files (since we can't grep them)
+CHANGED_FILES=$(git diff --cached --name-only --diff-filter=d)
+
+NO_FORMAT="\e[0m"
+F_BOLD="\e[1m"
+C_RED="\e[31m"
+C_YELLOW="\e[93m"
+C_CYAN="\e[36m"
+C_LIME="\e[92m"
+
+# Rather than doing `return 1`, we fail fast.
+function fail {
+  echo -e "${C_RED}${F_BOLD}Pre-commit hook failed! Fix the above errors before committing.${NO_FORMAT}"
+  exit 1
+}
+
+function file_ends_with_newline {
+  file_path=$1
+
+  # NOTE: Empty files technically end with a newline.
+    [[ $(wc -l < "$file_path") -eq 0 ]] || [[ $(tail -c1 "$file_path" | wc -l) -gt 0 ]]
+}
+
+function is_executable_installed {
+  executable_name=$1
+
+  which "$executable_name" >/dev/null
+}
+
+# Returns a 0 status code if the given feature is enabled, 1 otherwise.
+# Feature names are arbitrarily defined in the optional file `.skipped-checks`
+# in order to give more control to developers to-as what gets executed.
+function feature_is_enabled {
+  feature_name=$1
+
+  # We redirect output so that it doesn't emit warnings if the file doesn't exist.
+  ! grep "$feature_name" "$GIT_ROOT/.githooks/.skipped-checks" &> /dev/null
+}
+
+function feature_is_disabled {
+  feature_name=$1
+
+  ! feature_is_enabled "$feature_name"
+}
+
+function skip_if_no_changes {
+  if [[ -z "$CHANGED_FILES" ]]; then
+    echo "No changes were detected while running the pre-commit hook." && exit 0
+  fi
+}
+
+function skip_if_merge_in_progress {
+  if [ -f ".git/MERGE_HEAD" ]; then
+    echo "Detected merge in progress, skipping pre-commit hook." && exit 0
+  fi
+}
+
+function fail_if_unresolved_merge_conflict {
+  # Check the files to prevent merge markers from being committed.
+  if echo "$CHANGED_FILES" | xargs --no-run-if-empty egrep '[><]{7}' -H -I --line-number; then
+    echo -e "${C_RED}You have merge markers (conflicts) in the above files, lines. Fix them before committing.${NO_FORMAT}" && fail
+  fi
+}
+
+function lint_eof_newlines {
+  if feature_is_disabled "pre-commit-auto-newlines"; then
+    return 0
+  fi
+
+  text_files=$(echo "$CHANGED_FILES" | grep -E '\.(css|docker|Dockerfile|dockerignore|ejs|env|example|gitignore|html|js|json|php|py|rb|scss|sh|svg|toml|trivyignore|ts|txt|yaml|yml)$')
+  for f in $text_files; do
+    # Add a linebreak to the file if it doesn't have one
+    if ! file_ends_with_newline "$f"; then
+      echo >>"$f"
+      git add "$f"
+    fi
+  done
+}
+
+function lint_php {
+  php_files=$(echo "$CHANGED_FILES" | grep '\.php')
+  if [[ -z "$php_files" ]]; then
+    return 0 # There's nothing to lint.
+  fi
+
+  pint="vendor/bin/pint"
+
+  if ! [ -x "$pint" ]; then
+    echo -e "${C_RED}Pint is not installed. Install it with \`composer install\`.${NO_FORMAT}" && return 1
+  fi
+
+  php_files_arg=$(echo "$php_files" | tr '\n' ' ')
+
+  echo -e "${C_CYAN}Linting Pint...${NO_FORMAT}"
+  $pint || return 1
+
+  git add $php_files_arg
+}
+
+echo -e "${NO_FORMAT}${F_BOLD}Running pre-commit hook...${NO_FORMAT}"
+
+skip_if_merge_in_progress
+skip_if_no_changes
+
+fail_if_unresolved_merge_conflict
+
+lint_eof_newlines || fail
+lint_php || fail
+
+echo -e "${C_LIME}${F_BOLD}Pre-commit hook passed!${NO_FORMAT}"

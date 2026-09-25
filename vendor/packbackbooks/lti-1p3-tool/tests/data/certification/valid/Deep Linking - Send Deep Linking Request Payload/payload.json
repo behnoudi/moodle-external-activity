@@ -1,0 +1,59 @@
+{
+    "https://purl.imsglobal.org/spec/lti/claim/message_type": "LtiDeepLinkingRequest",
+    "given_name": "Lauren",
+    "family_name": "Hutton",
+    "middle_name": "Colleen",
+    "email": "l.c.hutton@district1.com",
+    "name": "Lauren Colleen Hutton",
+    "https://purl.imsglobal.org/spec/lti/claim/roles": [
+      "http://purl.imsglobal.org/vocab/lis/v2/membership#Instructor"
+    ],
+    "https://purl.imsglobal.org/spec/lti/claim/context": {
+      "id": "8893483",
+      "label": "Biology 102",
+      "title": "Bio Adventures",
+      "type": [
+        "http://purl.imsglobal.org/vocab/lis/v2/course#CourseSection"
+      ]
+    },
+    "https://purl.imsglobal.org/spec/lti-dl/claim/deep_linking_settings": {
+      "accept_types": [
+        "link",
+        "file",
+        "html",
+        "ltiResourceLink"
+      ],
+      "accept_media_types": "image/*,text/html,application/json",
+      "accept_presentation_document_targets": [
+        "iframe",
+        "window"
+      ],
+      "accept_multiple": true,
+      "auto_create": true,
+      "title": "Certification Deep Linking",
+      "text": "Certification Default Text Description",
+      "data": "909708",
+      "deep_link_return_url": "https://ltiadvantagevalidator.imsglobal.org/ltitool/deeplinkresponse.html"
+    },
+    "iss": "https://ltiadvantagevalidator.imsglobal.org",
+    "aud": "imstester_3dfad6d",
+    "iat": 1695135796,
+    "exp": 1695136096,
+    "sub": "39890",
+    "nonce": "130d925e-f17d-425b-875e-c69485179f4f",
+    "https://purl.imsglobal.org/spec/lti/claim/version": "1.3.0",
+    "https://purl.imsglobal.org/spec/lti/claim/launch_presentation": {
+      "document_target": "window",
+      "height": 360,
+      "width": 480
+    },
+    "https://purl.imsglobal.org/spec/lti/claim/deployment_id": "testdeploy",
+    "https://purl.imsglobal.org/spec/lti-ags/claim/endpoint": {
+      "scope": [
+        "https://purl.imsglobal.org/spec/lti-ags/scope/lineitem",
+        "https://purl.imsglobal.org/spec/lti-ags/scope/result.readonly",
+        "https://purl.imsglobal.org/spec/lti-ags/scope/score"
+      ],
+      "lineitems": "https://ltiadvantagevalidator.imsglobal.org/ltitool/rest/assignmentsgrades/17387/lineitems"
+    }
+  }
