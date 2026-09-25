@@ -1,0 +1,377 @@
+/* ===========================================================
+   کارگاه سقراطی دانش‌آموزی — هویت بصری «نقشه‌ی ماجراجویی»
+   =========================================================== */
+
+:root {
+    --paper: #F6F1E7;
+    --paper-deep: #EFE7D4;
+    --ink: #232B3D;
+    --ink-soft: #5B6478;
+    --indigo: #33417A;
+    --indigo-deep: #232B5C;
+    --indigo-tint: #E3E7F6;
+    --gold: #E0A73E;
+    --gold-deep: #B9822A;
+    --sage: #4F8B6E;
+    --rose: #C1554A;
+    --line: rgba(35, 43, 61, 0.12);
+}
+
+* { box-sizing: border-box; }
+
+html, body {
+    height: 100%;
+    margin: 0;
+}
+
+body {
+    font-family: 'Vazirmatn', Tahoma, sans-serif;
+    background: #DED5BE;
+    color: var(--ink);
+}
+
+.app-shell {
+    display: flex;
+    flex-direction: column;
+    height: 100dvh;
+    max-width: 720px;
+    margin: 0 auto;
+    background: var(--paper);
+    box-shadow: 0 0 30px rgba(0, 0, 0, 0.18);
+    overflow: hidden;
+    position: relative;
+}
+
+/* ---------------- هدر ---------------- */
+.app-header {
+    flex-shrink: 0;
+    background: var(--indigo-deep);
+    color: #fff;
+    padding: 0.9rem 1rem 0.7rem;
+    z-index: 5;
+}
+
+.header-top {
+    display: flex;
+    align-items: center;
+    gap: 0.7rem;
+}
+
+.mentor-badge {
+    width: 42px;
+    height: 42px;
+    flex-shrink: 0;
+    border-radius: 14px;
+    background: rgba(255, 255, 255, 0.12);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.3rem;
+}
+
+.header-text {
+    flex: 1 1 auto;
+    min-width: 0;
+    display: flex;
+    flex-direction: column;
+    line-height: 1.3;
+}
+
+.course-title {
+    margin: 0;
+    font-size: 1.02rem;
+    font-weight: 700;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.status-text {
+    font-size: 0.78rem;
+    color: rgba(255, 255, 255, 0.72);
+}
+
+.reset-btn {
+    flex-shrink: 0;
+    width: 34px;
+    height: 34px;
+    border-radius: 10px;
+    border: none;
+    background: rgba(255, 255, 255, 0.1);
+    color: #fff;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+}
+
+.reset-btn:hover { background: rgba(255, 255, 255, 0.2); }
+
+/* ---------------- نوار پیشرفت (نقشه‌ی مراحل) ---------------- */
+.progress-track {
+    display: flex;
+    align-items: center;
+    gap: 0.3rem;
+    margin-top: 0.85rem;
+    overflow-x: auto;
+    padding-bottom: 0.15rem;
+}
+
+.progress-step {
+    display: flex;
+    align-items: center;
+    gap: 0.3rem;
+    flex-shrink: 0;
+}
+
+.progress-dot {
+    width: 26px;
+    height: 26px;
+    border-radius: 50%;
+    background: rgba(255, 255, 255, 0.14);
+    color: rgba(255, 255, 255, 0.65);
+    font-size: 0.72rem;
+    font-weight: 700;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+    border: 2px solid transparent;
+    transition: all 0.25s ease;
+}
+
+.progress-step.is-done .progress-dot {
+    background: var(--sage);
+    color: #fff;
+}
+
+.progress-step.is-current .progress-dot {
+    background: var(--gold);
+    color: var(--indigo-deep);
+    border-color: rgba(255, 255, 255, 0.6);
+    transform: scale(1.12);
+}
+
+.progress-line {
+    width: 16px;
+    height: 2px;
+    background: rgba(255, 255, 255, 0.18);
+    flex-shrink: 0;
+}
+
+.progress-step.is-done + .progress-line { background: var(--sage); }
+
+/* ---------------- بدنه‌ی چت ---------------- */
+.chat-body {
+    flex: 1 1 auto;
+    overflow-y: auto;
+    padding: 1rem 4%;
+    background: var(--paper-deep);
+    display: flex;
+    flex-direction: column;
+    gap: 0.55rem;
+}
+
+.message-row {
+    display: flex;
+    max-width: 100%;
+}
+
+.message-row.from-user { justify-content: flex-start; flex-direction: row-reverse; }
+.message-row.from-assistant { justify-content: flex-start; }
+
+.message-bubble {
+    max-width: 82%;
+    padding: 0.6rem 0.85rem;
+    border-radius: 1rem;
+    font-size: 0.94rem;
+    line-height: 1.65;
+    word-break: break-word;
+    box-shadow: 0 1px 2px rgba(35, 43, 61, 0.08);
+}
+
+.user-bubble {
+    background: var(--indigo);
+    color: #fff;
+    border-bottom-right-radius: 0.3rem;
+}
+
+.bot-bubble {
+    background: #ffffff;
+    border: 1px solid var(--line);
+    border-bottom-left-radius: 0.3rem;
+}
+
+.message-text :first-child { margin-top: 0 !important; }
+.message-text :last-child { margin-bottom: 0 !important; }
+.message-text p { margin: 0 0 0.5em; }
+.message-text ul, .message-text ol { margin: 0.25em 0 0.5em; padding-inline-start: 1.4em; }
+.message-text li { margin-bottom: 0.2em; }
+.message-text strong { font-weight: 700; }
+.message-text code {
+    background: rgba(35, 43, 61, 0.08);
+    padding: 0.1em 0.4em;
+    border-radius: 0.3em;
+    font-size: 0.85em;
+    direction: ltr;
+    unicode-bidi: embed;
+}
+.message-text blockquote {
+    border-inline-start: 3px solid var(--gold);
+    margin: 0.4em 0;
+    padding-inline-start: 0.7em;
+    color: var(--ink-soft);
+}
+.user-bubble .message-text blockquote { border-inline-start-color: rgba(255,255,255,0.5); color: rgba(255,255,255,0.85); }
+
+/* بادج مرحله‌ی روی حباب‌های مربی */
+.bot-bubble .step-tag {
+    display: inline-block;
+    font-size: 0.68rem;
+    font-weight: 700;
+    color: var(--gold-deep);
+    background: rgba(224, 167, 62, 0.15);
+    border-radius: 999px;
+    padding: 0.1rem 0.55rem;
+    margin-bottom: 0.4rem;
+}
+
+/* حباب تایپ */
+.typing-row { display: flex; }
+.typing-bubble {
+    background: #ffffff;
+    border: 1px solid var(--line);
+    border-radius: 1rem;
+    border-bottom-left-radius: 0.3rem;
+    padding: 0.6rem 0.9rem;
+    display: inline-flex;
+    gap: 0.28rem;
+}
+.typing-bubble .dot {
+    width: 6px; height: 6px; border-radius: 50%;
+    background: var(--ink-soft);
+    animation: bounce 1.2s infinite ease-in-out;
+}
+.typing-bubble .dot:nth-child(2) { animation-delay: 0.15s; }
+.typing-bubble .dot:nth-child(3) { animation-delay: 0.3s; }
+@keyframes bounce {
+    0%, 60%, 100% { transform: translateY(0); opacity: 0.6; }
+    30% { transform: translateY(-4px); opacity: 1; }
+}
+
+/* ---------------- فوتر ---------------- */
+.chat-footer {
+    flex-shrink: 0;
+    background: var(--paper);
+    padding: 0.6rem 0.7rem;
+    border-top: 1px solid var(--line);
+}
+
+.chat-input-row {
+    display: flex;
+    align-items: flex-end;
+    gap: 0.5rem;
+}
+
+#messageInput {
+    flex: 1 1 auto;
+    border: 1.5px solid var(--line);
+    border-radius: 1.2rem;
+    outline: none;
+    resize: none;
+    max-height: 120px;
+    font-family: inherit;
+    font-size: 0.95rem;
+    line-height: 1.4;
+    background: #fff;
+    padding: 0.65rem 1rem;
+}
+
+#messageInput:focus { border-color: var(--indigo); }
+
+.send-btn {
+    flex-shrink: 0;
+    width: 46px;
+    height: 46px;
+    border: none;
+    border-radius: 50%;
+    background: var(--indigo);
+    color: #fff;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    transition: background 0.15s ease, transform 0.1s ease;
+}
+.send-btn svg { transform: scaleX(-1); }
+.send-btn:hover { background: var(--indigo-deep); }
+.send-btn:active { transform: scale(0.94); }
+.send-btn:disabled { opacity: 0.5; cursor: default; }
+
+/* ---------------- کارت پایانیِ نمره ---------------- */
+.grade-overlay {
+    position: absolute;
+    inset: 0;
+    background: rgba(35, 43, 61, 0.55);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 1.5rem;
+    z-index: 20;
+    animation: fadeIn 0.3s ease;
+}
+.grade-overlay.hidden { display: none; }
+
+@keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+
+.grade-card {
+    background: var(--paper);
+    border-radius: 1.4rem;
+    padding: 1.8rem 1.6rem;
+    max-width: 380px;
+    width: 100%;
+    text-align: center;
+    box-shadow: 0 20px 50px rgba(0, 0, 0, 0.35);
+    animation: popUp 0.4s cubic-bezier(.2,1.4,.4,1);
+}
+@keyframes popUp { from { transform: scale(0.85); opacity: 0; } to { transform: scale(1); opacity: 1; } }
+
+.grade-trophy { font-size: 3rem; line-height: 1; margin-bottom: 0.4rem; }
+.grade-title { margin: 0 0 0.6rem; font-size: 1.15rem; color: var(--indigo-deep); }
+.grade-score {
+    font-size: 1.9rem;
+    font-weight: 800;
+    color: var(--gold-deep);
+    margin-bottom: 0.3rem;
+}
+.grade-stars { font-size: 1.4rem; letter-spacing: 0.2rem; margin-bottom: 0.8rem; color: var(--gold); }
+.grade-feedback {
+    font-size: 0.9rem;
+    line-height: 1.75;
+    color: var(--ink-soft);
+    margin: 0 0 0.7rem;
+}
+.grade-status {
+    font-size: 0.78rem;
+    color: var(--sage);
+    margin: 0 0 1.1rem;
+}
+.grade-status.is-error { color: var(--rose); }
+
+.grade-close-btn {
+    border: none;
+    background: var(--indigo);
+    color: #fff;
+    padding: 0.65rem 1.4rem;
+    border-radius: 999px;
+    font-family: inherit;
+    font-size: 0.9rem;
+    cursor: pointer;
+}
+.grade-close-btn:hover { background: var(--indigo-deep); }
+
+/* ---------------- موبایل ---------------- */
+@media (max-width: 480px) {
+    .app-shell { max-width: 100%; box-shadow: none; }
+    .message-bubble { max-width: 88%; }
+}
