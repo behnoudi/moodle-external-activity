@@ -13,16 +13,3 @@ A standalone PHP-based external activity tool implementing **LTI 1.3 (Advantage)
 - Modular content delivery via the `topics/` directory.
 
 ---
-
-## 📂 Project Structure
-
-```text
-├── topics/          # Interactive activity content/topics
-├── vendor/          # Composer dependencies
-├── composer.json    # PHP dependency management
-├── db.php           # Database connection & configurations
-├── jwks.php         # Public JSON Web Key Set (JWKS) endpoint
-├── launch.php       # LTI launch redirection & session initiator
-├── login.php        # OIDC login initiation endpoint
-├── score.php        # Grade passback script (LTI AGS)
-└── README.md        # Project documentation
